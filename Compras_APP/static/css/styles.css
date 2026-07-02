@@ -1,0 +1,117 @@
+body{
+
+    margin:0;
+
+    font-family:Segoe UI, sans-serif;
+
+    background:#f5f7fa;
+
+}
+
+.login-background{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    height:100vh;
+
+    background:linear-gradient(135deg,#0d6efd,#4b8df8);
+
+}
+
+.login-card{
+
+    width:420px;
+
+    background:white;
+
+    padding:40px;
+
+    border-radius:20px;
+
+}
+
+.login-icon{
+
+    font-size:70px;
+
+    color:#0d6efd;
+
+}
+
+.wrapper{
+
+    display:flex;
+
+    min-height:100vh;
+
+}
+
+.sidebar{
+
+    width:240px;
+
+    background:#0d6efd;
+
+    color:white;
+
+    padding:25px;
+
+}
+
+.sidebar h3{
+
+    color:white;
+
+}
+
+.sidebar a{
+
+    display:block;
+
+    color:white;
+
+    text-decoration:none;
+
+    padding:12px;
+
+    border-radius:10px;
+
+    margin-bottom:10px;
+
+}
+
+.sidebar a:hover{
+
+    background:rgba(255,255,255,.2);
+
+}
+
+.content{
+
+    flex:1;
+
+    padding:30px;
+
+    background:#f5f7fa;
+
+}
+
+.dashboard-card{
+
+    border:none;
+
+    border-radius:18px;
+
+    transition:.3s;
+
+}
+
+.dashboard-card:hover{
+
+    transform:translateY(-5px);
+
+}

@@ -1,0 +1,104 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Sistema de Compras Inventario</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
+</head>
+
+<body>
+
+<div class="wrapper">
+
+    <aside class="sidebar">
+
+        <h3 class="text-center mb-4">
+
+            <i class="bi bi-cart4"></i>
+
+            Compras Inventario
+
+        </h3>
+
+        <a href="{% url 'dashboard' %}">
+            <i class="bi bi-speedometer2"></i>
+            Dashboard
+        </a>
+
+        <a href="#">
+            <i class="bi bi-cart-check"></i>
+            Compras 
+        </a>
+
+        <a href="#">
+            <i class="bi bi-truck"></i>
+            Proveedores
+        </a>
+
+        <a href="#">
+            <i class="bi bi-file-earmark-bar-graph"></i>
+            Reportes
+        </a>
+
+        {% if request.user.groups.all.0.name == "Administrador" %}
+<a href="{% url 'usuarios' %}">
+    <i class="bi bi-people"></i>
+    Usuarios
+</a>
+{% endif %}
+
+    </aside>
+
+    <main class="content">
+
+        <nav class="navbar navbar-light bg-white shadow-sm rounded mb-4">
+
+            <div class="container-fluid">
+
+                <span class="navbar-brand">
+
+                    Sistema de Compras Inventario
+
+                </span>
+
+                <div>
+
+                    <strong>{{ request.user.username }}</strong>
+
+                    <a href="{% url 'logout' %}"
+                       class="btn btn-outline-danger btn-sm ms-3">
+
+                        <i class="bi bi-box-arrow-right"></i>
+
+                        Salir
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </nav>
+
+        {% block content %}
+
+        {% endblock %}
+
+    </main>
+
+</div>
+
+</body>
+
+</html>
