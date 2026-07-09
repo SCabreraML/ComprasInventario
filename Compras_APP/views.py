@@ -1,8 +1,9 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseForbidden
-
+from .models import SolicitudCompra
+from .forms import SolicitudCompraForm
 
 
 def login_view(request):
@@ -63,3 +64,38 @@ def usuarios(request):
         return HttpResponseForbidden("No tienes permisos para acceder a esta página.")
 
     return render(request, "usuarios.html")
+
+@login_required
+def lista_solicitudes(request):
+    solicitudes = SolicitudCompra.objects.all().order_by('-fecha_registro')
+    return render(request, "solicitudes/lista.html", {"solicitudes": solicitudes})
+
+@login_required
+def crear_solicitud(request):
+    if request.method == "POST":
+        form = SolicitudCompraForm(request.POST)
+        if form.is_valid():
+            solicitud = form.save(commit=False)
+            solicitud.usuario = request.user
+            solicitud.save()
+            return redirect("lista_solicitudes")
+    else:
+        form = SolicitudCompraForm()
+    return render(request, "solicitudes/formulario.html", {"form": form, "titulo": "Nueva Solicitud"})
+
+@login_required
+def editar_solicitud(request, pk):
+    solicitud = get_object_or_404(SolicitudCompra, pk=pk)
+
+    # Solo permitir edición si está en estado Pendiente
+    if solicitud.estado != 'Pendiente':
+        return HttpResponseForbidden("No se puede editar una solicitud que ya ha sido procesada.")
+
+    if request.method == "POST":
+        form = SolicitudCompraForm(request.POST, instance=solicitud)
+        if form.is_valid():
+            form.save()
+            return redirect("lista_solicitudes")
+    else:
+        form = SolicitudCompraForm(instance=solicitud)
+    return render(request, "solicitudes/formulario.html", {"form": form, "titulo": "Editar Solicitud"})
