@@ -2,6 +2,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.http import HttpResponseForbidden
+from .forms import SolicitudCompraForm
+from .models import SolicitudCompra
 
 
 
@@ -63,3 +65,97 @@ def usuarios(request):
         return HttpResponseForbidden("No tienes permisos para acceder a esta página.")
 
     return render(request, "usuarios.html")
+
+
+
+# ====================================================
+# Dev 2 - ST-2.4
+# Registrar solicitud
+# ====================================================
+
+@login_required
+def crear_solicitud(request):
+
+    if request.method == "POST":
+
+        form = SolicitudCompraForm(request.POST)
+
+        if form.is_valid():
+
+            solicitud = form.save(commit=False)
+
+            solicitud.solicitante = request.user
+
+            solicitud.save()
+
+            return redirect("lista_solicitudes")
+
+    else:
+
+        form = SolicitudCompraForm()
+
+    return render(
+        request,
+        "solicitudes/formulario.html",
+        {
+            "form": form
+        }
+    )
+
+
+# ====================================================
+# Dev 3 - ST-2.5
+# Consultar solicitudes
+# ====================================================
+
+@login_required
+def lista_solicitudes(request):
+
+    solicitudes = SolicitudCompra.objects.order_by("-fecha_registro")
+
+    return render(
+        request,
+        "solicitudes/lista.html",
+        {
+            "solicitudes": solicitudes
+        }
+    )
+
+
+# ====================================================
+# Dev 3 - ST-2.6
+# Editar solicitudes pendientes
+# ====================================================
+
+@login_required
+def editar_solicitud(request, pk):
+
+    solicitud = SolicitudCompra.objects.get(pk=pk)
+
+    if solicitud.estado != "PENDIENTE":
+        return redirect("lista_solicitudes")
+
+    if request.method == "POST":
+
+        form = SolicitudCompraForm(
+            request.POST,
+            instance=solicitud
+        )
+
+        if form.is_valid():
+            form.save()
+            return redirect("lista_solicitudes")
+
+    else:
+
+        form = SolicitudCompraForm(
+            instance=solicitud
+        )
+
+    return render(
+        request,
+        "solicitudes/formulario.html",
+        {
+            "form": form
+        }
+    )

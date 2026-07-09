@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="card shadow">
+
+    <div class="card-header bg-primary text-white">
+
+        <h4 class="mb-0">
+            Registrar Solicitud de Compra
+        </h4>
+
+    </div>
+
+    <div class="card-body">
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            {{ form.as_p }}
+
+            <button type="submit" class="btn btn-success">
+
+                <i class="bi bi-check-circle"></i>
+
+                Guardar Solicitud
+
+            </button>
+
+            <a href="{% url 'lista_solicitudes' %}"
+               class="btn btn-secondary">
+
+                Cancelar
+
+            </a>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}
