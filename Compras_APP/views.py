@@ -1,9 +1,12 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseForbidden
 from .forms import SolicitudCompraForm
 from .models import SolicitudCompra
+
+def registrar_auditoria(user, accion, detalle):
+    print(f"[AUDITORIA] Usuario: {user} - Acción: {accion} - Detalle: {detalle}")
 
 
 
@@ -105,14 +108,30 @@ def crear_solicitud(request):
 
 @login_required
 def lista_solicitudes(request):
-
     solicitudes = SolicitudCompra.objects.order_by("-fecha_registro")
+
+    from .utils import consultar_existencias_api
+    for sol in solicitudes:
+        info_stock = consultar_existencias_api(sol.producto)
+        if info_stock:
+            sol.stock_logistica = info_stock.get("stock_total", 0)
+            sol.stock_bodega = info_stock.get("stock_bodega", 0)
+            sol.stock_percha = info_stock.get("stock_percha", 0)
+            sol.disponibilidad = "Suficiente" if sol.stock_logistica >= sol.cantidad else "Insuficiente"
+            sol.producto_existe = True
+        else:
+            sol.stock_logistica = 0
+            sol.disponibilidad = "No encontrado en Logística"
+            sol.producto_existe = False
+
+    es_gestor = request.user.groups.filter(name__in=["Administrador", "Encargado de Compras"]).exists() or request.user.is_superuser
 
     return render(
         request,
         "solicitudes/lista.html",
         {
-            "solicitudes": solicitudes
+            "solicitudes": solicitudes,
+            "es_gestor": es_gestor
         }
     )
 
@@ -157,14 +176,17 @@ def editar_solicitud(request, pk):
 
 #Sprint 3 
 # HU-07: Implementar aprobación de solicitudes
+@login_required
 def aprobar_solicitud_view(request, pk):
     solicitud = get_object_or_404(SolicitudCompra, pk=pk)
     solicitud.estado = SolicitudCompra.ESTADO_APROBADA
     solicitud.save()
     registrar_auditoria(request.user if request.user.is_authenticated else None,
-                         "Aprobar solicitud", f"{solicitud.codigo_solicitud}")
-    return redirect("compras_bandeja_pendientes")
+                         "Aprobar solicitud", f"{solicitud.codigo}")
+    return redirect("lista_solicitudes")
+
 #HU-08 Implementar rechazo con justificación
+@login_required
 def rechazar_solicitud_view(request, pk):
     solicitud = get_object_or_404(SolicitudCompra, pk=pk)
 
@@ -172,7 +194,7 @@ def rechazar_solicitud_view(request, pk):
         justificacion = request.POST.get("justificacion", "").strip()
         #no se puede rechazar sin justificación
         if not justificacion:
-            return render(request, "compras/rechazar_solicitud.html", {
+            return render(request, "solicitudes/rechazar_solicitud.html", {
                 "solicitud": solicitud,
                 "error": "Debes ingresar una justificación para rechazar.",
             })
@@ -180,7 +202,7 @@ def rechazar_solicitud_view(request, pk):
         solicitud.justificacion = justificacion
         solicitud.save()
         registrar_auditoria(request.user if request.user.is_authenticated else None,
-                             "Rechazar solicitud", f"{solicitud.codigo_solicitud} - {justificacion}")
-        return redirect("compras_bandeja_pendientes")
+                             "Rechazar solicitud", f"{solicitud.codigo} - {justificacion}")
+        return redirect("lista_solicitudes")
 
-    return render(request, "compras/rechazar_solicitud.html", {"solicitud": solicitud})
+    return render(request, "solicitudes/rechazar_solicitud.html", {"solicitud": solicitud})

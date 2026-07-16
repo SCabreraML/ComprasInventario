@@ -25,4 +25,16 @@ urlpatterns = [
         views.editar_solicitud,
         name="editar_solicitud"
     ),
+
+    path(
+        "solicitudes/<int:pk>/aprobar/",
+        views.aprobar_solicitud_view,
+        name="aprobar_solicitud"
+    ),
+
+    path(
+        "solicitudes/<int:pk>/rechazar/",
+        views.rechazar_solicitud_view,
+        name="rechazar_solicitud"
+    ),
 ]

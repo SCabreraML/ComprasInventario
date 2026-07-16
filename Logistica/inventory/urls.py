@@ -14,4 +14,5 @@ urlpatterns = [
     path("vencer/", views.proximos_vencer_view, name="inventory_proximos_vencer"),
     path("retirar-vencidos/", views.retirar_vencidos_view, name="inventory_retirar_vencidos"),
     path("historial/<int:producto_id>/", views.historial_movimientos_view, name="inventory_historial"),
+    path("api/existencias/", views.api_consultar_existencias, name="api_consultar_existencias"),
 ]
