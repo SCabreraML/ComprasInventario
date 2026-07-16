@@ -1,44 +1,28 @@
-{% extends "base.html" %}
+from django.urls import path
+from . import views
 
-{% block content %}
+urlpatterns = [
+    path("", views.login_view, name="login"),
+    path("dashboard/", views.dashboard, name="dashboard"),
+    path("logout/", views.logout_view, name="logout"),
+    path("dashboard/usuarios/", views.usuarios, name="usuarios"),
 
-<div class="card shadow">
+    # Sprint 2
+    path(
+        "solicitudes/",
+        views.lista_solicitudes,
+        name="lista_solicitudes"
+    ),
 
-    <div class="card-header bg-primary text-white">
+    path(
+        "solicitudes/nueva/",
+        views.crear_solicitud,
+        name="crear_solicitud"
+    ),
 
-        <h4 class="mb-0">
-            Registrar Solicitud de Compra
-        </h4>
-
-    </div>
-
-    <div class="card-body">
-
-        <form method="POST">
-
-            {% csrf_token %}
-
-            {{ form.as_p }}
-
-            <button type="submit" class="btn btn-success">
-
-                <i class="bi bi-check-circle"></i>
-
-                Guardar Solicitud
-
-            </button>
-
-            <a href="{% url 'lista_solicitudes' %}"
-               class="btn btn-secondary">
-
-                Cancelar
-
-            </a>
-
-        </form>
-
-    </div>
-
-</div>
-
-{% endblock %}
+    path(
+        "solicitudes/<int:pk>/editar/",
+        views.editar_solicitud,
+        name="editar_solicitud"
+    ),
+]

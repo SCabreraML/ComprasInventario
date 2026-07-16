@@ -7,10 +7,8 @@ Usuario = get_user_model()
 
 class SolicitudCompra(models.Model):
 
-    # ================================
     # Dev 1 - ST-2.1
     # Modelo para registrar solicitudes
-    # ================================
 
     ESTADOS = [
         ('PENDIENTE', 'Pendiente'),
@@ -45,10 +43,8 @@ class SolicitudCompra(models.Model):
         default="PENDIENTE"
     )
 
-    # ================================
     # Dev 1 - ST-2.2
     # Generación automática del código
-    # ================================
     def save(self, *args, **kwargs):
 
         if not self.codigo:

@@ -66,12 +66,9 @@ def usuarios(request):
 
     return render(request, "usuarios.html")
 
-
-
-# ====================================================
 # Dev 2 - ST-2.4
 # Registrar solicitud
-# ====================================================
+
 
 @login_required
 def crear_solicitud(request):
@@ -102,11 +99,9 @@ def crear_solicitud(request):
         }
     )
 
-
-# ====================================================
 # Dev 3 - ST-2.5
 # Consultar solicitudes
-# ====================================================
+
 
 @login_required
 def lista_solicitudes(request):
@@ -122,10 +117,10 @@ def lista_solicitudes(request):
     )
 
 
-# ====================================================
+
 # Dev 3 - ST-2.6
 # Editar solicitudes pendientes
-# ====================================================
+
 
 @login_required
 def editar_solicitud(request, pk):
@@ -159,3 +154,33 @@ def editar_solicitud(request, pk):
             "form": form
         }
     )
+
+#Sprint 3 
+# HU-07: Implementar aprobación de solicitudes
+def aprobar_solicitud_view(request, pk):
+    solicitud = get_object_or_404(SolicitudCompra, pk=pk)
+    solicitud.estado = SolicitudCompra.ESTADO_APROBADA
+    solicitud.save()
+    registrar_auditoria(request.user if request.user.is_authenticated else None,
+                         "Aprobar solicitud", f"{solicitud.codigo_solicitud}")
+    return redirect("compras_bandeja_pendientes")
+#HU-08 Implementar rechazo con justificación
+def rechazar_solicitud_view(request, pk):
+    solicitud = get_object_or_404(SolicitudCompra, pk=pk)
+
+    if request.method == "POST":
+        justificacion = request.POST.get("justificacion", "").strip()
+        #no se puede rechazar sin justificación
+        if not justificacion:
+            return render(request, "compras/rechazar_solicitud.html", {
+                "solicitud": solicitud,
+                "error": "Debes ingresar una justificación para rechazar.",
+            })
+        solicitud.estado = SolicitudCompra.ESTADO_RECHAZADA
+        solicitud.justificacion = justificacion
+        solicitud.save()
+        registrar_auditoria(request.user if request.user.is_authenticated else None,
+                             "Rechazar solicitud", f"{solicitud.codigo_solicitud} - {justificacion}")
+        return redirect("compras_bandeja_pendientes")
+
+    return render(request, "compras/rechazar_solicitud.html", {"solicitud": solicitud})
