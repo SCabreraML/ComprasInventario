@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Devolución por Mercadería No Conforme</title>
+</head>
+<body>
+    <h1>Devolución por Mercadería No Conforme</h1>
+    {% if message %}
+        <p>{{ message }}</p>
+    {% endif %}
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Registrar devolución</button>
+    </form>
+    <a href="/">Volver al dashboard</a>
+</body>
+</html>

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Productos Próximos a Vencer</title>
+</head>
+<body>
+    <h1>Productos Próximos a Vencer</h1>
+    <ul>
+        {% for lote in lotes %}
+            <li>{{ lote.producto.codigo }} - {{ lote.producto.nombre }} - Lote {{ lote.numero_lote }} - vence {{ lote.fecha_vencimiento }} - cantidad {{ lote.cantidad }}</li>
+        {% empty %}
+            <li>No hay lotes próximos a vencer en el periodo configurado.</li>
+        {% endfor %}
+    </ul>
+    <a href="/">Volver al dashboard</a>
+</body>
+</html>

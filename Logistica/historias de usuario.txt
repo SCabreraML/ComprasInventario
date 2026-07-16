@@ -1,0 +1,202 @@
+HU-01 Registrar Recepción Conforme de Mercadería
+
+
+
+Por hacer
+
+
+Descripción
+
+Registrar Recepción Conforme de Mercadería
+Como personal de recepción de mercadería
+Quiero registrar el ingreso de productos conformes al almacén
+Para actualizar correctamente el inventario y notificar a las áreas involucradas.
+Criterios de Validación
+•El sistema debe permitir registrar una recepción asociada a una orden de compra.
+•Debe validar la existencia de documentos
+•Debe registrar fecha, hora y responsable de la recepción.
+•Solo se podrá confirmar la recepción si los productos están conformes.
+•El stock de bodega debe incrementarse automáticamente.
+•Debe generarse un comprobante de recepción.
+•Debe enviarse una notificación a Compras y Ventas.
+•Debe quedar registro en la trazabilidad del producto.
+
+HU-02 Gestionar Devolución por Mercadería No Conforme
+
+
+
+Por hacer
+
+
+Descripción
+
+Gestionar Devolución por Mercadería No Conforme
+Como personal de recepción
+Quiero registrar productos defectuosos o incorrectos
+Para generar su devolución sin afectar el inventario disponible.
+Criterios de Validación
+•Debe existir un campo obligatorio para registrar la novedad detectada.
+•El sistema debe permitir adjuntar evidencia fotográfica.
+•Debe generarse automáticamente una orden de devolución.
+•No debe actualizarse el stock positivo de bodega.
+•Debe emitirse un informe de no conformidad.
+•Debe notificarse a Compras y Ventas.
+•La devolución debe quedar registrada con fecha y responsable.
+
+HU-03 Consultar Estado del Inventario
+
+
+
+Por hacer
+
+
+Descripción
+
+Consultar Estado del Inventario
+Como encargado de inventario Quiero visualizar las existencias actuales
+Para conocer la disponibilidad de productos.
+Criterios de Validación
+•Debe permitir búsqueda por código, nombre o categoría.
+•Debe mostrar stock en bodega y percha.
+•Debe mostrar lotes y fechas de vencimiento.
+•Debe indicar la última actualización realizada.
+•Debe permitir exportar información.
+
+HU-04 Registrar Movimientos de Inventario
+
+
+
+Por hacer
+
+
+Descripción
+
+Registrar Movimientos de Inventario
+Como encargado de inventario
+Quiero registrar entradas y salidas de mercancía Para mantener actualizado el stock.
+Criterios de Validación
+•Debe registrar tipo de movimiento.
+•Debe solicitar motivo del movimiento.
+•Debe actualizar automáticamente los inventarios involucrados.
+•Debe generar historial de trazabilidad.
+•Debe impedir movimientos con cantidades negativas.
+•Debe registrar usuario, fecha y hora.
+
+HU-05 Generar Reporte de Existencias
+
+
+
+Por hacer
+
+
+Descripción
+
+Generar Reporte de Existencias
+Como encargado de inventario
+Quiero obtener reportes automáticos de stock
+Para apoyar la toma de decisiones de compra.
+Criterios de Validación
+•El sistema debe generar reportes en PDF.
+•Debe mostrar existencias por ubicación.
+•Debe incluir productos críticos.
+•Debe enviarse automáticamente al departamento de Compras.
+•Debe contener fecha de generación.
+
+HU-06 Monitorear Productos Próximos a Vencer
+
+
+
+Por hacer
+
+
+Descripción
+
+Monitorear Productos Próximos a Vencer
+Como encargado de caducidad
+Quiero identificar productos cercanos a su fecha de vencimiento Para tomar acciones preventivas.
+Criterios de Validación
+•El sistema debe mostrar productos próximos a vencer según parámetros configurables.
+•Debe generar alertas automáticas.
+•Debe clasificar productos por días restantes.
+•Debe generar informes consolidados.
+•Debe enviar alertas a Marketing, Ventas y Contabilidad.
+•Debe registrar fecha de emisión de la alerta.
+
+HU-07 Retirar Productos Vencidos
+
+
+
+Por hacer
+
+
+Descripción
+
+Retirar Productos Vencidos
+Como encargado de caducidad
+Quiero registrar la baja de productos vencidos Para evitar su comercialización.
+Criterios de Validación
+•El sistema debe permitir registrar la baja por vencimiento.
+•Debe solicitar motivo y evidencia.
+•Debe descontar automáticamente el stock.
+•Debe generar un informe de pérdidas.
+•Debe registrar responsable, fecha y hora.
+•Debe notificar a Ventas y Contabilidad.
+
+HU-08 Mantener Productos Disponibles
+
+
+
+Por hacer
+
+
+Descripción
+
+Mantener Productos Disponibles
+Como encargado de caducidad
+Quiero mantener disponibles los productos en estado óptimo Para asegurar su comercialización normal.
+Criterios de Validación
+•El sistema debe verificar que el producto no esté próximo a vencer.
+•Debe registrar la revisión realizada.
+•Debe mantener el stock sin modificaciones.
+•Debe programar la siguiente revisión.
+
+HU-09 Reponer Inventario en Perchas Aplicando FIFO
+
+
+
+Por hacer
+
+
+Descripción
+
+Reponer Inventario en Perchas Aplicando FIFO
+Como personal de perchas
+Quiero abastecer las góndolas utilizando el método FIFO Para garantizar la correcta rotación de productos.
+Criterios de Validación
+•Debe permitir consultar stock de bodega.
+•Debe identificar faltantes en percha.
+•Debe mostrar lotes disponibles.
+•Debe sugerir automáticamente el lote más antiguo.
+•Debe actualizar stock de bodega y percha.
+•Debe registrar responsable y fecha.
+•Debe generar un informe de reposición.
+•Debe notificar a Compras y Ventas.
+
+HU-10 Finalizar Inspección Sin Novedades
+
+
+
+Por hacer
+
+
+Descripción
+
+Finalizar Inspección Sin Novedades
+Como personal de perchas
+Quiero registrar una inspección satisfactoria
+Para evidenciar que no se requieren movimientos.
+Criterios de Validación
+•Debe permitir registrar inspecciones sin movimientos.
+•Debe almacenar fecha y responsable.
+•No debe modificar inventarios.
+•Debe generar evidencia de la inspección realizada.

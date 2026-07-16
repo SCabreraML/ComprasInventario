@@ -1,0 +1,232 @@
+MoSCoW  
+MUST HAVE (Obligatorio)  
+SHOULD HAVE (Importante)  
+HU-01 Registrar Recepción Conforme de 
+Mercadería  
+HU-05 Generar Reporte de Existencias  
+HU-02 Gestionar Devolución por 
+Mercadería No Conforme  
+HU-06 Monitorear Productos Próximos a 
+Vencer  
+HU-03 Consultar Estado del Inventario  
+HU-08 Mantener Productos Disponibles  
+HU-04 Registrar Movimientos de 
+Inventario  
+Indicadores básicos de rotación 
+HU-07 Retirar Productos Vencidos  
+Reportes de movimientos de stock  
+HU-09 Reponer Inventario en Perchas 
+Aplicando FIFO  
+Control de stock y trazabilidad   
+Alertas de stock mínimo   
+COULD HAVE (Deseable)  
+WON'T HAVE (Futuro)  
+Corregir Errores de Abastecimiento  
+Detección automática de productos 
+mediante reportes.  
+Gráficos avanzados de inventario  
+Automatización completa de 
+abastecimiento  
+Exportaciones avanzadas de reportes  
+Alertas por correo   
+Predicción de demanda  
+Dashboard gerencial en tiempo real  
+Integración con Marketing y Ventas  
+Integración con sistemas externos  
+
+
+ÉPICA 1: Recepción de Mercadería  
+Objetivo: Gestionar la recepción de productos provenientes de proveedores.  
+Casos de Uso  
+• Registrar recepción de productos.  
+• Verificar estado de productos recibidos.  
+• Validar documentos de ingreso.  
+• Registrar novedades de recepción.  
+• Generar devolución a proveedor.  
+o Actores  
+o  Recepcionista.  
+o Bodeguero.  
+ÉPICA 2: Gestión de Inventario  
+Objetivo: Controlar y mantener actualizado el inventario de la organización.  
+Casos de Uso  
+• Registrar entrada de productos.  
+• Registrar salida de productos.  
+• Actualizar inventario.  
+• Consultar stock.  
+• Asignar ubicación en bodega.  
+• Consultar trazabilidad de productos.  
+o Actores  
+o Bodeguero.  
+ÉPICA 3: Control de Calidad y Devoluciones  
+Objetivo: Gestionar productos defectuosos, devueltos o caducados.  
+Casos de Uso  
+• Registrar devoluciones de clientes.  
+• Reingresar productos aptos al inventario.  
+• Clasificar productos dañados.  
+• Registrar productos caducados.  
+• Generar devolución a proveedor.  
+o Actores  
+o Bodeguero.  
+UNIDAD ACADÉMICA DE FORMACIÓN TÉCNICA Y TECNOLÓGICA   
+PUCE TEC     
+ÉPICA 4: Gestión de Perchas y Reposición  
+Objetivo: Garantizar la disponibilidad de productos en exhibición para la venta.  
+Casos de Uso  
+• Consultar productos próximos a vencer.  
+• Visualizar stock en perchas.  
+• Retirar productos de bodega.  
+• Reponer productos en perchas.  
+• Aplicar rotación FIFO.  
+• Inspeccionar stock en perchas.  
+• Verificar faltantes.  
+• Validar disponibilidad de productos.  
+• Generar solicitud de reposición por bajo stock.  
+o Actores  
+o  Perchero.  
+ÉPICA 5: Abastecimiento y Logística  
+Objetivo: Coordinar y supervisar el reabastecimiento interno del inventario.  
+Casos de Uso  
+• Planificar abastecimiento interno.  
+• Generar solicitud de reposición.  
+• Coordinar reposición de productos.  
+• Supervisar abastecimiento.  
+o 
+Actores  
+o 
+o 
+Logística.  
+Supervisor Logístico. 
+
+Historias de Usuario y Criterios de Aceptación.  
+MÓDULO 1: RECEPCIÓN DE MERCADERÍA   
+Historia de Usuario HU-01  
+Registrar Recepción Conforme de Mercadería  
+Como personal de recepción de mercadería  
+Quiero registrar el ingreso de productos conformes al almacén  
+Para actualizar correctamente el inventario y notificar a las áreas involucradas.  
+Criterios de Validación  
+• El sistema debe permitir registrar una recepción asociada a una orden de compra.   
+• Debe validar la existencia de documentos   
+• Debe registrar fecha, hora y responsable de la recepción.   
+• Solo se podrá confirmar la recepción si los productos están conformes.   
+• El stock de bodega debe incrementarse automáticamente.   
+• Debe generarse un comprobante de recepción.   
+• Debe enviarse una notificación a Compras y Ventas.   
+• Debe quedar registro en la trazabilidad del producto.   
+Historia de Usuario HU-02  
+Gestionar Devolución por Mercadería No Conforme  
+Como personal de recepción  
+Quiero registrar productos defectuosos o incorrectos  
+Para generar su devolución sin afectar el inventario disponible.  
+Criterios de Validación  
+• Debe existir un campo obligatorio para registrar la novedad detectada.   
+• El sistema debe permitir adjuntar evidencia fotográfica.   
+• Debe generarse automáticamente una orden de devolución.   
+• No debe actualizarse el stock positivo de bodega.   
+UNIDAD ACADÉMICA DE FORMACIÓN TÉCNICA Y TECNOLÓGICA   
+PUCE TEC     
+• Debe emitirse un informe de no conformidad.   
+• Debe notificarse a Compras y Ventas.   
+• La devolución debe quedar registrada con fecha y responsable.   
+MÓDULO 2: GESTIÓN DE INVENTARIO  
+Historia de Usuario HU-03  
+Consultar Estado del Inventario  
+Como encargado de inventario Quiero 
+visualizar las existencias actuales  
+Para conocer la disponibilidad de productos.  
+Criterios de Validación  
+• Debe permitir búsqueda por código, nombre o categoría.   
+• Debe mostrar stock en bodega y percha.   
+• Debe mostrar lotes y fechas de vencimiento.   
+• Debe indicar la última actualización realizada.   
+• Debe permitir exportar información.   
+Historia de Usuario HU-04  
+Registrar Movimientos de Inventario  
+Como encargado de inventario  
+Quiero registrar entradas y salidas de mercancía 
+Para mantener actualizado el stock.  
+Criterios de Validación  
+• Debe registrar tipo de movimiento.   
+• Debe solicitar motivo del movimiento.   
+• Debe actualizar automáticamente los inventarios involucrados.   
+• Debe generar historial de trazabilidad.   
+• Debe impedir movimientos con cantidades negativas.   
+• Debe registrar usuario, fecha y hora.    
+UNIDAD ACADÉMICA DE FORMACIÓN TÉCNICA Y TECNOLÓGICA   
+PUCE TEC     
+Historia de Usuario HU-05  
+Generar Reporte de Existencias  
+Como encargado de inventario  
+Quiero obtener reportes automáticos de stock  
+Para apoyar la toma de decisiones de compra.  
+Criterios de Validación  
+• El sistema debe generar reportes en PDF.   
+• Debe mostrar existencias por ubicación.   
+• Debe incluir productos críticos.   
+• Debe enviarse automáticamente al departamento de Compras.   
+• Debe contener fecha de generación.   
+MÓDULO 3: CONTROL DE CADUCIDAD  
+Historia de Usuario HU-06  
+Monitorear Productos Próximos a Vencer  
+Como encargado de caducidad  
+Quiero identificar productos cercanos a su fecha de vencimiento 
+Para tomar acciones preventivas.  
+Criterios de Validación  
+• El sistema debe mostrar productos próximos a vencer según parámetros 
+configurables.   
+• Debe generar alertas automáticas.   
+• Debe clasificar productos por días restantes.   
+• Debe generar informes consolidados.   
+• Debe enviar alertas a Marketing, Ventas y Contabilidad.   
+• Debe registrar fecha de emisión de la alerta.   
+Historia de Usuario HU-07  
+Retirar Productos Vencidos  
+Como encargado de caducidad  
+UNIDAD ACADÉMICA DE FORMACIÓN TÉCNICA Y TECNOLÓGICA   
+PUCE TEC     
+Quiero registrar la baja de productos vencidos Para 
+evitar su comercialización.  
+Criterios de Validación  
+• El sistema debe permitir registrar la baja por vencimiento.   
+• Debe solicitar motivo y evidencia.   
+• Debe descontar automáticamente el stock.   
+• Debe generar un informe de pérdidas.   
+• Debe registrar responsable, fecha y hora.   
+• Debe notificar a Ventas y Contabilidad.   
+Historia de Usuario HU-08  
+Mantener Productos Disponibles  
+Como encargado de caducidad  
+Quiero mantener disponibles los productos en estado óptimo 
+Para asegurar su comercialización normal.  
+Criterios de Validación  
+• El sistema debe verificar que el producto no esté próximo a vencer.   
+• Debe registrar la revisión realizada.   
+• Debe mantener el stock sin modificaciones.   
+• Debe programar la siguiente revisión.   
+MÓDULO 4: REPOSICIÓN DE PERCHAS  
+Historia de Usuario HU-09  
+Reponer Inventario en Perchas Aplicando FIFO  
+Como personal de perchas  
+Quiero abastecer las góndolas utilizando el método FIFO Para 
+garantizar la correcta rotación de productos.  
+Criterios de Validación  
+• Debe permitir consultar stock de bodega.   
+• Debe identificar faltantes en percha.   
+UNIDAD ACADÉMICA DE FORMACIÓN TÉCNICA Y TECNOLÓGICA   
+PUCE TEC     
+• Debe mostrar lotes disponibles.   
+• Debe sugerir automáticamente el lote más antiguo.   
+• Debe actualizar stock de bodega y percha.   
+• Debe registrar responsable y fecha.   
+• Debe generar un informe de reposición.   
+• Debe notificar a Compras y Ventas.   
+Historia de Usuario HU-10  
+Finalizar Inspección Sin Novedades  
+Como personal de perchas  
+Quiero registrar una inspección satisfactoria  
+Para evidenciar que no se requieren movimientos.  
+Criterios de Validación  
+• Debe permitir registrar inspecciones sin movimientos.   
+• Debe almacenar fecha y responsable.   
+• No debe modificar inventarios.   
+• Debe generar evidencia de la inspección realizada.  

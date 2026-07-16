@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Reposición FIFO en Perchas</title>
+</head>
+<body>
+    <h1>Reposición FIFO en Perchas</h1>
+    {% if message %}
+        <p>{{ message }}</p>
+    {% endif %}
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Aplicar FIFO</button>
+    </form>
+    <h2>Lotes disponibles</h2>
+    <ul>
+        {% for lote in lotes %}
+            <li>{{ lote.producto.codigo }} - {{ lote.numero_lote }} - {{ lote.cantidad }} unidades - vence {{ lote.fecha_vencimiento }}</li>
+        {% empty %}
+            <li>No hay lotes disponibles.</li>
+        {% endfor %}
+    </ul>
+    <a href="/">Volver al dashboard</a>
+</body>
+</html>

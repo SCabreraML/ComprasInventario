@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Historial de Movimientos</title>
+</head>
+<body>
+    <h1>Historial de Movimientos para {{ producto.nombre }}</h1>
+    <ul>
+        {% for movimiento in movimientos %}
+            <li>{{ movimiento.created_at }} - {{ movimiento.tipo }} - {{ movimiento.cantidad }} - {{ movimiento.motivo }}</li>
+        {% empty %}
+            <li>No hay movimientos registrados.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

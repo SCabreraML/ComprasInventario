@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard de Inventario</title>
+</head>
+<body>
+    <h1>Dashboard de Inventario</h1>
+    <nav>
+        <ul>
+            <li><a href="/recepcion/">Recepción</a></li>
+            <li><a href="/movimiento/">Movimientos</a></li>
+            <li><a href="/devolucion/">Devoluciones</a></li>
+            <li><a href="/inspeccion/">Inspección de perchas</a></li>
+            <li><a href="/reponer/">Reposición FIFO</a></li>
+            <li><a href="/reporte/">Reporte de existencias</a></li>
+            <li><a href="/vencer/">Próximos a vencer</a></li>
+            <li><a href="/retirar-vencidos/">Retirar vencidos</a></li>
+        </ul>
+    </nav>
+    <form method="get">
+        {{ search_form.as_p }}
+        <button type="submit">Buscar</button>
+    </form>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Nombre</th>
+                <th>Categoría</th>
+                <th>Stock Bodega</th>
+                <th>Stock Percha</th>
+                <th>Stock Total</th>
+                <th>Fecha Vencimiento</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for producto in productos %}
+                <tr>
+                    <td>{{ producto.codigo }}</td>
+                    <td>{{ producto.nombre }}</td>
+                    <td>{{ producto.categoria }}</td>
+                    <td>{{ producto.stock_bodega }}</td>
+                    <td>{{ producto.stock_percha }}</td>
+                    <td>{{ producto.stock_total }}</td>
+                    <td>{{ producto.fecha_vencimiento }}</td>
+                    <td><a href="/historial/{{ producto.id }}/">Historial</a></td>
+                </tr>
+            {% empty %}
+                <tr><td colspan="8">No hay productos registrados.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
