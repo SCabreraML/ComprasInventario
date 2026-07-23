@@ -1,6 +1,6 @@
 from django import forms
 from .models import SolicitudCompra
-from .models import Cotizacion, Proveedor, SolicitudCotizacion
+
 
 class SolicitudCompraForm(forms.ModelForm):
 
@@ -46,18 +46,43 @@ class SolicitudCompraForm(forms.ModelForm):
 
         return producto
 
-    #sprint 4 
-    # HU-09: Registrar proveedores
-class ProveedorForm(forms.ModelForm):
-    class Meta:
-        model = Proveedor
-        fields = ["nombre", "ruc", "telefono", "correo"]
 
-    #hu-10: Registrar solicitud de cotización
-class SolicitudCotizacionForm(forms.ModelForm):
+from .models import Cotizacion
+
+class CotizacionForm(forms.ModelForm):
+    # HU-13: Registrar tiempo de entrega
+    # HU-14: Asociar proveedor con la cotización
     class Meta:
-        model = SolicitudCotizacion
-        fields = ["proveedores"]
+        model = Cotizacion
+        fields = [
+            "proveedor",
+            "precio_unitario",
+            "vigencia",
+            "tiempo_entrega"
+        ]
         widgets = {
-            "proveedores": forms.CheckboxSelectMultiple(),  # ST-4.3: elegir uno o varios
+            "vigencia": forms.DateInput(attrs={"type": "date", "class": "form-control"}),
+            "proveedor": forms.TextInput(attrs={"class": "form-control", "placeholder": "Nombre del proveedor"}),
+            "precio_unitario": forms.NumberInput(attrs={"class": "form-control", "step": "0.01", "placeholder": "0.00"}),
+            "tiempo_entrega": forms.NumberInput(attrs={"class": "form-control", "placeholder": "Tiempo estimado en días"}),
         }
+
+    # HU-14: Asociar proveedor con la cotización
+    def clean_proveedor(self):
+        proveedor = self.cleaned_data.get("proveedor")
+        if not proveedor or not proveedor.strip():
+            raise forms.ValidationError("El proveedor es obligatorio.")
+        return proveedor
+
+    # HU-13: Registrar tiempo de entrega (el dato es obligatorio)
+    def clean_tiempo_entrega(self):
+        tiempo = self.cleaned_data.get("tiempo_entrega")
+        if tiempo is None or tiempo <= 0:
+            raise forms.ValidationError("El tiempo de entrega es obligatorio y debe ser mayor a cero.")
+        return tiempo
+
+    def clean_precio_unitario(self):
+        precio = self.cleaned_data.get("precio_unitario")
+        if precio is None or precio <= 0:
+            raise forms.ValidationError("El precio unitario debe ser mayor a cero.")
+        return precio

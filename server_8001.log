@@ -1,15 +1,50 @@
 Watching for file changes with StatReloader
-[15/Jul/2026 21:55:00] "GET /api/existencias/?producto=P-101 HTTP/1.1" 200 157
-[15/Jul/2026 21:55:02] "GET /api/existencias/?producto=P-102 HTTP/1.1" 200 155
-[15/Jul/2026 21:55:02] "GET /api/existencias/?producto=P-101 HTTP/1.1" 200 157
-[15/Jul/2026 21:55:03] "GET /api/existencias/?producto=P-102 HTTP/1.1" 200 155
-[15/Jul/2026 21:55:03] "GET /api/existencias/?producto=P-101 HTTP/1.1" 200 157
-[15/Jul/2026 21:55:05] "GET /api/existencias/?producto=P-102 HTTP/1.1" 200 155
-[15/Jul/2026 21:55:05] "GET /api/existencias/?producto=P-101 HTTP/1.1" 200 157
+[23/Jul/2026 09:55:29] "GET /api/existencias/?producto=P-102 HTTP/1.1" 200 155
+[23/Jul/2026 09:55:29] "GET /api/existencias/?producto=P-101 HTTP/1.1" 200 157
+[23/Jul/2026 09:55:31] "GET /api/existencias/?producto=P-101 HTTP/1.1" 200 157
+[23/Jul/2026 09:55:31] "GET /api/existencias/?producto=P-102 HTTP/1.1" 200 155
+[23/Jul/2026 09:55:31] "GET /api/existencias/?producto=P-101 HTTP/1.1" 200 157
+[23/Jul/2026 09:55:33] "GET /api/existencias/?producto=P-102 HTTP/1.1" 200 155
+[23/Jul/2026 09:55:33] "GET /api/existencias/?producto=P-101 HTTP/1.1" 200 157
+[23/Jul/2026 09:55:33] "GET /api/existencias/?producto=P-102 HTTP/1.1" 200 155
+[23/Jul/2026 09:55:33] "GET /api/existencias/?producto=P-101 HTTP/1.1" 200 157
+[23/Jul/2026 09:56:39] "GET /api/existencias/?producto=P-102 HTTP/1.1" 200 155
+[23/Jul/2026 09:56:39] "GET /api/existencias/?producto=P-101 HTTP/1.1" 200 157
+[23/Jul/2026 09:56:39] "GET /api/existencias/?producto=P-102 HTTP/1.1" 200 155
+[23/Jul/2026 09:56:39] "GET /api/existencias/?producto=P-101 HTTP/1.1" 200 157
+[23/Jul/2026 09:56:41] "GET /api/existencias/?producto=P-101 HTTP/1.1" 200 157
+[23/Jul/2026 09:56:41] "GET /api/existencias/?producto=P-102 HTTP/1.1" 200 155
+[23/Jul/2026 09:56:41] "GET /api/existencias/?producto=P-101 HTTP/1.1" 200 157
+[23/Jul/2026 09:56:41] "GET /api/existencias/?producto=P-102 HTTP/1.1" 200 155
+[23/Jul/2026 09:56:41] "GET /api/existencias/?producto=P-101 HTTP/1.1" 200 157
+[23/Jul/2026 09:56:43] "GET /api/existencias/?producto=P-102 HTTP/1.1" 200 155
+[23/Jul/2026 09:56:43] "GET /api/existencias/?producto=P-101 HTTP/1.1" 200 157
+[23/Jul/2026 09:56:43] "GET /api/existencias/?producto=P-102 HTTP/1.1" 200 155
+[23/Jul/2026 09:56:43] "GET /api/existencias/?producto=P-101 HTTP/1.1" 200 157
+[23/Jul/2026 09:56:43] "GET /api/existencias/?producto=P-102 HTTP/1.1" 200 155
+[23/Jul/2026 09:56:43] "GET /api/existencias/?producto=P-101 HTTP/1.1" 200 157
+[23/Jul/2026 09:56:49] "GET /api/existencias/?producto=P-102 HTTP/1.1" 200 155
+[23/Jul/2026 09:56:49] "GET /api/existencias/?producto=P-101 HTTP/1.1" 200 157
+[23/Jul/2026 09:56:49] "GET /api/existencias/?producto=P-102 HTTP/1.1" 200 155
+[23/Jul/2026 09:56:49] "GET /api/existencias/?producto=P-101 HTTP/1.1" 200 157
+[23/Jul/2026 09:56:49] "GET /api/existencias/?producto=P-102 HTTP/1.1" 200 155
+[23/Jul/2026 09:56:49] "GET /api/existencias/?producto=P-101 HTTP/1.1" 200 157
+[23/Jul/2026 09:56:50] "GET /api/existencias/?producto=P-102 HTTP/1.1" 200 155
+[23/Jul/2026 09:56:50] "GET /api/existencias/?producto=P-101 HTTP/1.1" 200 157
+[23/Jul/2026 09:56:50] "GET /api/existencias/?producto=P-102 HTTP/1.1" 200 155
+[23/Jul/2026 09:56:50] "GET /api/existencias/?producto=P-101 HTTP/1.1" 200 157
+[23/Jul/2026 09:56:50] "GET /api/existencias/?producto=P-102 HTTP/1.1" 200 155
+[23/Jul/2026 09:56:50] "GET /api/existencias/?producto=P-101 HTTP/1.1" 200 157
+[23/Jul/2026 09:56:52] "GET /api/existencias/?producto=P-102 HTTP/1.1" 200 155
+[23/Jul/2026 09:56:52] "GET /api/existencias/?producto=P-102 HTTP/1.1" 200 155
+[23/Jul/2026 09:56:52] "GET /api/existencias/?producto=P-101 HTTP/1.1" 200 157
+[23/Jul/2026 09:56:52] "GET /api/existencias/?producto=P-101 HTTP/1.1" 200 157
+[23/Jul/2026 09:56:52] "GET /api/existencias/?producto=P-102 HTTP/1.1" 200 155
+[23/Jul/2026 09:56:52] "GET /api/existencias/?producto=P-101 HTTP/1.1" 200 157
 Performing system checks...
 
 System check identified no issues (0 silenced).
-July 15, 2026 - 21:48:10
+July 23, 2026 - 09:55:22
 Django version 6.0.6, using settings 'inventory_project.settings'
 Starting development server at http://127.0.0.1:8001/
 Quit the server with CONTROL-C.

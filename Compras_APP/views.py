@@ -2,13 +2,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseForbidden
-from .forms import SolicitudCompraForm, ProveedorForm, SolicitudCotizacionForm
-from .utils import hay_stock_suficiente 
-from .models import SolicitudCompra
-from django.shortcuts import get_object_or_404, redirect, render
-
-from .forms import CotizacionForm
-from .models import SolicitudCotizacion
+from .forms import SolicitudCompraForm, CotizacionForm
+from .models import SolicitudCompra, Cotizacion
 
 def registrar_auditoria(user, accion, detalle):
     print(f"[AUDITORIA] Usuario: {user} - Acción: {accion} - Detalle: {detalle}")
@@ -115,7 +110,6 @@ def crear_solicitud(request):
 def lista_solicitudes(request):
     solicitudes = SolicitudCompra.objects.order_by("-fecha_registro")
 
-    ##HU-04: Validar disponibilidad de stock (Logistica)
     from .utils import consultar_existencias_api
     for sol in solicitudes:
         info_stock = consultar_existencias_api(sol.producto)
@@ -181,26 +175,6 @@ def editar_solicitud(request, pk):
     )
 
 #Sprint 3 
-
-# HU-05: Actualizar estado de la solicitud de inventario
-def verificar_stock_view(request, pk):
-    solicitud = get_object_or_404(SolicitudCompra, pk=pk)
-
-    if hay_stock_suficiente(solicitud.producto_codigo, solicitud.cantidad_solicitada):
-        solicitud.estado = SolicitudCompra.ESTADO_HAY_STOCK
-    else:
-        solicitud.estado = SolicitudCompra.ESTADO_SIN_STOCK
-    solicitud.save()
-
-    return redirect("compras_listado_solicitudes")
-# HU-06: Crear bandeja de solicitudes pendientes
-def bandeja_pendientes_view(request):
-    # ST-3.4: solo se muestran solicitudes que requieren revisión
-    # (ya se verificó el stock, y todavía no hay decisión de aprobación)
-    solicitudes = SolicitudCompra.objects.filter(
-        estado__in=[SolicitudCompra.ESTADO_HAY_STOCK, SolicitudCompra.ESTADO_SIN_STOCK]
-    ).order_by("fecha_registro")
-    return render(request, "compras/bandeja_pendientes.html", {"solicitudes": solicitudes})
 # HU-07: Implementar aprobación de solicitudes
 @login_required
 def aprobar_solicitud_view(request, pk):
@@ -218,7 +192,7 @@ def rechazar_solicitud_view(request, pk):
 
     if request.method == "POST":
         justificacion = request.POST.get("justificacion", "").strip()
-        #no se puede rechfazar sin justificación
+        #no se puede rechazar sin justificación
         if not justificacion:
             return render(request, "solicitudes/rechazar_solicitud.html", {
                 "solicitud": solicitud,
@@ -233,64 +207,58 @@ def rechazar_solicitud_view(request, pk):
 
     return render(request, "solicitudes/rechazar_solicitud.html", {"solicitud": solicitud})
 
-    #sprint 4 
-    # HU-09: Registrar proveedores
-def registrar_proveedor_view(request):
+
+# HU-13: Registrar tiempo de entrega
+# HU-14: Asociar proveedor con la cotización
+# HU-12: Registrar información económica de la cotización
+@login_required
+def registrar_cotizacion_view(request, pk):
+    """
+    Registra una cotización asociada a una solicitud de compra.
+    Permite asociar un proveedor (HU-14), registrar la información económica (HU-12),
+    y guardar el tiempo estimado de entrega obligatorio (HU-13).
+    """
+    solicitud = get_object_or_404(SolicitudCompra, pk=pk)
 
     if request.method == "POST":
-        form = ProveedorForm(request.POST)
+        form = CotizacionForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect("compras_listado_proveedores")
-    else:
-        form = ProveedorForm()
-    return render(request, "compras/registrar_proveedor.html", {"form": form})
-
-    # HU-10: Registrar solicitud de cotización
-def crear_solicitud_cotizacion_view(request, pk):
-    solicitud_compra = get_object_or_404(SolicitudCompra, pk=pk)
-
-    # Si ya existe una solicitud de cotización para esta compra, no crear otra:
-    # la mostramos directamente (ahí se pueden seguir agregando cotizaciones)
-    solicitud_cotizacion_existente = getattr(solicitud_compra, "solicitud_cotizacion", None)
-    if solicitud_cotizacion_existente is not None:
-        return redirect("compras_ver_cotizaciones", pk=solicitud_cotizacion_existente.pk)
-
-    if request.method == "POST":
-        form = SolicitudCotizacionForm(request.POST)
-        if form.is_valid():
-            solicitud_cotizacion = form.save(commit=False)
-            solicitud_cotizacion.solicitud_compra = solicitud_compra
-            solicitud_cotizacion.save()
-            form.save_m2m()
-            return redirect("compras_ver_cotizaciones", pk=solicitud_cotizacion.pk)
-    else:
-        form = SolicitudCotizacionForm()
-
-    return render(request, "compras/crear_solicitud_cotizacion.html", {
-        "form": form,
-        "solicitud_compra": solicitud_compra,
-    })
-
-def ver_cotizaciones_view(request, pk):
-    # HU-11 (COMINV-66): consultar las cotizaciones registradas de una solicitud
-    solicitud_cotizacion = get_object_or_404(SolicitudCotizacion, pk=pk)
-    cotizaciones = solicitud_cotizacion.cotizaciones.all()
-
-    if request.method == "POST":
-        # HU-12 (COMINV-67): registrar la información económica de una cotización
-        cot_form = CotizacionForm(request.POST)
-        if cot_form.is_valid():
-            cotizacion = cot_form.save(commit=False)
-            cotizacion.solicitud_cotizacion = solicitud_cotizacion
+            cotizacion = form.save(commit=False)
+            cotizacion.solicitud = solicitud  # HU-14: Asociar proveedor con la solicitud de compra
             cotizacion.save()
-            return redirect("compras_ver_cotizaciones", pk=pk)
+            registrar_auditoria(
+                request.user if request.user.is_authenticated else None,
+                "Registrar cotización",
+                f"Cotización de {cotizacion.proveedor} registrada para {solicitud.codigo} con tiempo de entrega {cotizacion.tiempo_entrega} días"
+            )
+            return redirect("lista_cotizaciones", pk=solicitud.id)
     else:
-        cot_form = CotizacionForm()
-        cot_form.fields["proveedor"].queryset = solicitud_cotizacion.proveedores.all()
+        form = CotizacionForm()
 
-    return render(request, "compras/ver_cotizaciones.html", {
-        "solicitud_cotizacion": solicitud_cotizacion,
-        "cotizaciones": cotizaciones,
-        "cot_form": cot_form,
-    })
+    return render(
+        request,
+        "solicitudes/registrar_cotizacion.html",
+        {
+            "form": form,
+            "solicitud": solicitud
+        }
+    )
+
+
+# HU-11: Consultar cotizaciones registradas
+@login_required
+def lista_cotizaciones_view(request, pk):
+    """
+    Muestra todas las cotizaciones registradas de una solicitud de compra (HU-11).
+    """
+    solicitud = get_object_or_404(SolicitudCompra, pk=pk)
+    cotizaciones = solicitud.cotizaciones.order_by("precio_unitario")
+
+    return render(
+        request,
+        "solicitudes/lista_cotizaciones.html",
+        {
+            "solicitud": solicitud,
+            "cotizaciones": cotizaciones
+        }
+    )

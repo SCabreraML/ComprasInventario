@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3>
+            <i class="bi bi-file-earmark-medical"></i>
+            Cotizaciones para la Solicitud: {{ solicitud.codigo }} (HU-11)
+        </h3>
+        <div>
+            <a href="{% url 'registrar_cotizacion' solicitud.id %}" class="btn btn-primary">
+                <i class="bi bi-plus-circle"></i> Nueva Cotización
+            </a>
+            <a href="{% url 'lista_solicitudes' %}" class="btn btn-secondary">
+                <i class="bi bi-arrow-left"></i> Volver a Solicitudes
+            </a>
+        </div>
+    </div>
+
+    <div class="card shadow mb-4">
+        <div class="card-body bg-light">
+            <h5 class="card-title fw-bold">Información de la Solicitud</h5>
+            <div class="row">
+                <div class="col-md-4">
+                    <p class="mb-1"><strong>Producto:</strong> {{ solicitud.producto }}</p>
+                </div>
+                <div class="col-md-4">
+                    <p class="mb-1"><strong>Cantidad Solicitada:</strong> {{ solicitud.cantidad }}</p>
+                </div>
+                <div class="col-md-4">
+                    <p class="mb-1"><strong>Estado actual:</strong>
+                        {% if solicitud.estado == "PENDIENTE" %}
+                            <span class="badge bg-warning text-dark">Pendiente</span>
+                        {% elif solicitud.estado == "APROBADA" %}
+                            <span class="badge bg-success">Aprobada</span>
+                        {% else %}
+                            <span class="badge bg-danger">Rechazada</span>
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th>Proveedor (HU-14)</th>
+                            <th>Precio Unitario (HU-12)</th>
+                            <th>Tiempo de Entrega (HU-13)</th>
+                            <th>Vigencia (HU-12)</th>
+                            <th>Fecha Registro</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for cot in cotizaciones %}
+                        <tr>
+                            <td><strong>{{ cot.proveedor }}</strong></td>
+                            <td><span class="text-success fw-bold">${{ cot.precio_unitario }}</span></td>
+                            <td><span class="badge bg-info text-dark">{{ cot.tiempo_entrega }} días</span></td>
+                            <td>{{ cot.vigencia|date:"d/m/Y" }}</td>
+                            <td><small class="text-muted">{{ cot.fecha_registro|date:"d/m/Y H:i" }}</small></td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="5" class="text-center py-4 text-muted">
+                                <i class="bi bi-file-earmark-excel fs-4 d-block mb-2"></i>
+                                No existen cotizaciones registradas para esta solicitud de compra.
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
