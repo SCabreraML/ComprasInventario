@@ -1,0 +1,18 @@
+Watching for file changes with StatReloader
+[15/Jul/2026 21:55:00] "GET /api/existencias/?producto=P-101 HTTP/1.1" 200 157
+[15/Jul/2026 21:55:02] "GET /api/existencias/?producto=P-102 HTTP/1.1" 200 155
+[15/Jul/2026 21:55:02] "GET /api/existencias/?producto=P-101 HTTP/1.1" 200 157
+[15/Jul/2026 21:55:03] "GET /api/existencias/?producto=P-102 HTTP/1.1" 200 155
+[15/Jul/2026 21:55:03] "GET /api/existencias/?producto=P-101 HTTP/1.1" 200 157
+[15/Jul/2026 21:55:05] "GET /api/existencias/?producto=P-102 HTTP/1.1" 200 155
+[15/Jul/2026 21:55:05] "GET /api/existencias/?producto=P-101 HTTP/1.1" 200 157
+Performing system checks...
+
+System check identified no issues (0 silenced).
+July 15, 2026 - 21:48:10
+Django version 6.0.6, using settings 'inventory_project.settings'
+Starting development server at http://127.0.0.1:8001/
+Quit the server with CONTROL-C.
+
+WARNING: This is a development server. Do not use it in a production setting. Use a production WSGI or ASGI server instead.
+For more information on production servers see: https://docs.djangoproject.com/en/6.0/howto/deployment/

@@ -7,13 +7,17 @@ Usuario = get_user_model()
 
 class SolicitudCompra(models.Model):
 
+    ESTADO_PENDIENTE = "PENDIENTE"
+    ESTADO_APROBADA = "APROBADA"
+    ESTADO_RECHAZADA = "RECHAZADA"
+
     # Dev 1 - ST-2.1
     # Modelo para registrar solicitudes
 
     ESTADOS = [
-        ('PENDIENTE', 'Pendiente'),
-        ('APROBADA', 'Aprobada'),
-        ('RECHAZADA', 'Rechazada'),
+        (ESTADO_PENDIENTE, 'Pendiente'),
+        (ESTADO_APROBADA, 'Aprobada'),
+        (ESTADO_RECHAZADA, 'Rechazada'),
     ]
 
     codigo = models.CharField(
@@ -21,6 +25,8 @@ class SolicitudCompra(models.Model):
         unique=True,
         editable=False
     )
+
+    justificacion = models.TextField(blank=True, default="")
 
     producto = models.CharField(max_length=150)
 

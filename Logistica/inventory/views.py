@@ -144,3 +144,37 @@ def retirar_vencidos_view(request):
         message = None
     productos = Producto.objects.filter(stock_bodega__gt=0, activo=True)
     return render(request, "inventory/retirar_vencidos.html", {"productos": productos, "message": message})
+
+
+from django.http import JsonResponse
+from django.db.models import Q
+
+def api_consultar_existencias(request):
+    producto_codigo_o_nombre = request.GET.get("producto", "").strip()
+    if not producto_codigo_o_nombre:
+        return JsonResponse({
+            "status": "error",
+            "mensaje": "Debe especificar el parámetro 'producto'."
+        }, status=400)
+
+    producto = Producto.objects.filter(
+        Q(codigo__iexact=producto_codigo_o_nombre) | Q(nombre__iexact=producto_codigo_o_nombre)
+    ).first()
+
+    if not producto:
+        return JsonResponse({
+            "status": "not_found",
+            "mensaje": f"Producto '{producto_codigo_o_nombre}' no encontrado."
+        }, status=404)
+
+    return JsonResponse({
+        "status": "success",
+        "producto": {
+            "codigo": producto.codigo,
+            "nombre": producto.nombre,
+            "stock_bodega": producto.stock_bodega,
+            "stock_percha": producto.stock_percha,
+            "stock_total": producto.stock_total,
+            "stock_minimo": producto.stock_minimo,
+        }
+    })
