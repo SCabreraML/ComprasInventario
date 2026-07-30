@@ -4,6 +4,10 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseForbidden
 from .forms import SolicitudCompraForm, CotizacionForm
 from .models import SolicitudCompra, Cotizacion
+from django.shortcuts import get_object_or_404, redirect
+
+from .models import Cotizacion, OrdenCompra
+
 
 def registrar_auditoria(user, accion, detalle):
     print(f"[AUDITORIA] Usuario: {user} - Acción: {accion} - Detalle: {detalle}")
@@ -262,3 +266,32 @@ def lista_cotizaciones_view(request, pk):
             "cotizaciones": cotizaciones
         }
     )
+#sprint 4 HU-16: Seleccionar cotización ganadora
+def seleccionar_ganadora_view(request, pk):
+    cotizacion = get_object_or_404(Cotizacion, pk=pk)
+    solicitud_cotizacion = cotizacion.solicitud_cotizacion
+    solicitud_compra = solicitud_cotizacion.solicitud_compra
+
+    # HU-17: la seleccionada queda ACEPTADA, las demás RECHAZADA
+    solicitud_cotizacion.cotizaciones.exclude(pk=cotizacion.pk).update(
+        estado=Cotizacion.ESTADO_RECHAZADA
+    )
+    cotizacion.estado = Cotizacion.ESTADO_ACEPTADA
+    cotizacion.save()
+
+    # HU-18: genera la orden de compra y calcula el costo total
+    costo_total = solicitud_compra.cantidad_solicitada * cotizacion.precio_unitario
+    orden = OrdenCompra.objects.create(
+        cotizacion_ganadora=cotizacion,
+        costo_total=costo_total,
+    )
+
+    registrar_auditoria(request.user if request.user.is_authenticated else None,
+                         "Generar orden de compra", f"{orden.numero_orden}")
+
+    return redirect("compras_ver_orden", pk=orden.pk)
+
+# HU-15: Visualización de Detalle de Orden de Compra
+def ver_orden_view(request, pk):
+    orden = get_object_or_404(OrdenCompra, pk=pk)
+    return render(request, "compras/ver_orden.html", {"orden": orden})

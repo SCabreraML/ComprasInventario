@@ -1,46 +1,31 @@
 Watching for file changes with StatReloader
-[23/Jul/2026 14:55:25] "GET / HTTP/1.1" 200 1922
-[23/Jul/2026 14:55:25] "GET /static/css/styles.css HTTP/1.1" 200 1030
-[23/Jul/2026 14:55:27] "POST / HTTP/1.1" 302 0
-[23/Jul/2026 14:55:27] "GET /dashboard/ HTTP/1.1" 200 3173
-[23/Jul/2026 14:55:29] "GET /solicitudes/ HTTP/1.1" 200 6300
-[23/Jul/2026 14:55:30] "GET /solicitudes/nueva/ HTTP/1.1" 200 3943
-[23/Jul/2026 14:55:31] "POST /solicitudes/nueva/ HTTP/1.1" 302 0
-[23/Jul/2026 14:55:31] "GET /solicitudes/ HTTP/1.1" 200 8757
-[23/Jul/2026 14:55:32] "GET /solicitudes/nueva/ HTTP/1.1" 200 3943
-[23/Jul/2026 14:55:33] "POST /solicitudes/nueva/ HTTP/1.1" 302 0
-[23/Jul/2026 14:55:33] "GET /solicitudes/ HTTP/1.1" 200 11221
-[23/Jul/2026 14:56:35] "GET / HTTP/1.1" 200 1922
-[23/Jul/2026 14:56:35] "GET /static/css/styles.css HTTP/1.1" 200 1030
-[23/Jul/2026 14:56:37] "POST / HTTP/1.1" 302 0
-[23/Jul/2026 14:56:37] "GET /dashboard/ HTTP/1.1" 200 3173
-[23/Jul/2026 14:56:39] "GET /solicitudes/ HTTP/1.1" 200 11221
-[23/Jul/2026 14:56:40] "GET /solicitudes/nueva/ HTTP/1.1" 200 3943
-[23/Jul/2026 14:56:41] "POST /solicitudes/nueva/ HTTP/1.1" 302 0
-[23/Jul/2026 14:56:41] "GET /solicitudes/ HTTP/1.1" 200 13678
-[23/Jul/2026 14:56:42] "GET /solicitudes/nueva/ HTTP/1.1" 200 3943
-[23/Jul/2026 14:56:43] "POST /solicitudes/nueva/ HTTP/1.1" 302 0
-[23/Jul/2026 14:56:43] "GET /solicitudes/ HTTP/1.1" 200 16142
-[23/Jul/2026 14:56:44] "GET /solicitudes/5/cotizaciones/ HTTP/1.1" 200 4360
-[23/Jul/2026 14:56:45] "GET /solicitudes/5/cotizaciones/nueva/ HTTP/1.1" 200 4835
-[23/Jul/2026 14:56:47] "POST /solicitudes/5/cotizaciones/nueva/ HTTP/1.1" 302 0
-[23/Jul/2026 14:56:47] "GET /solicitudes/5/cotizaciones/ HTTP/1.1" 200 4449
-[23/Jul/2026 14:56:49] "GET /solicitudes/ HTTP/1.1" 200 16142
-[23/Jul/2026 14:56:50] "GET /solicitudes/5/aprobar/ HTTP/1.1" 302 0
-[23/Jul/2026 14:56:50] "GET /solicitudes/ HTTP/1.1" 200 15290
-[23/Jul/2026 14:56:51] "GET /solicitudes/6/rechazar/ HTTP/1.1" 200 3451
-[23/Jul/2026 14:56:52] "POST /solicitudes/6/rechazar/ HTTP/1.1" 302 0
-[23/Jul/2026 14:56:52] "GET /solicitudes/ HTTP/1.1" 200 14585
+[16/Jul/2026 02:53:21] "GET / HTTP/1.1" 200 1922
+[16/Jul/2026 02:53:21] "GET /static/css/styles.css HTTP/1.1" 200 1030
+[16/Jul/2026 02:54:54] "GET / HTTP/1.1" 200 1922
+[16/Jul/2026 02:54:54] "GET /static/css/styles.css HTTP/1.1" 200 1030
+[16/Jul/2026 02:54:56] "POST / HTTP/1.1" 302 0
+[16/Jul/2026 02:54:56] "GET /dashboard/ HTTP/1.1" 200 3173
+[16/Jul/2026 02:54:57] "GET /solicitudes/ HTTP/1.1" 200 3249
+[16/Jul/2026 02:54:58] "GET /solicitudes/nueva/ HTTP/1.1" 200 3943
+[16/Jul/2026 02:55:00] "POST /solicitudes/nueva/ HTTP/1.1" 302 0
+[16/Jul/2026 02:55:00] "GET /solicitudes/ HTTP/1.1" 200 5132
+[16/Jul/2026 02:55:01] "GET /solicitudes/nueva/ HTTP/1.1" 200 3943
+[16/Jul/2026 02:55:02] "POST /solicitudes/nueva/ HTTP/1.1" 302 0
+[16/Jul/2026 02:55:02] "GET /solicitudes/ HTTP/1.1" 200 7335
+[16/Jul/2026 02:55:03] "GET /solicitudes/1/aprobar/ HTTP/1.1" 302 0
+[16/Jul/2026 02:55:03] "GET /solicitudes/ HTTP/1.1" 200 6483
+[16/Jul/2026 02:55:04] "GET /solicitudes/2/rechazar/ HTTP/1.1" 200 3451
+[16/Jul/2026 02:55:05] "POST /solicitudes/2/rechazar/ HTTP/1.1" 302 0
+[16/Jul/2026 02:55:05] "GET /solicitudes/ HTTP/1.1" 200 5778
 Performing system checks...
 
 System check identified no issues (0 silenced).
-July 23, 2026 - 14:55:22
+July 16, 2026 - 02:48:10
 Django version 6.0.6, using settings 'config.settings'
 Starting development server at http://127.0.0.1:8000/
 Quit the server with CONTROL-C.
 
 WARNING: This is a development server. Do not use it in a production setting. Use a production WSGI or ASGI server instead.
 For more information on production servers see: https://docs.djangoproject.com/en/6.0/howto/deployment/
-[AUDITORIA] Usuario: admin_test - Acción: Registrar cotización - Detalle: Cotización de Distribuidora Nacional C.A. registrada para SOL-DBD733DF con tiempo de entrega 4 días
-[AUDITORIA] Usuario: admin_test - Acción: Aprobar solicitud - Detalle: SOL-DBD733DF
-[AUDITORIA] Usuario: admin_test - Acción: Rechazar solicitud - Detalle: SOL-61472F78 - No aprobado por falta de presupuesto de fin de mes.
+[AUDITORIA] Usuario: admin_test - Acción: Aprobar solicitud - Detalle: SOL-5EB73E03
+[AUDITORIA] Usuario: admin_test - Acción: Rechazar solicitud - Detalle: SOL-8C112C87 - No aprobado por falta de presupuesto de fin de mes.
