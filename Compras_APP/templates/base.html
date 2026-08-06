@@ -51,6 +51,11 @@
             Reportes
         </a>
 
+        <a href="{% url 'lista_ordenes' %}">
+    <i class="bi bi-receipt"></i>
+    Órdenes de Compra
+</a>
+
         {% if request.user.groups.all.0.name == "Administrador" %}
 <a href="{% url 'usuarios' %}">
     <i class="bi bi-people"></i>

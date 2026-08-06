@@ -49,4 +49,10 @@ urlpatterns = [
         views.registrar_cotizacion_view,
         name="registrar_cotizacion"
     ),
+
+    path(
+        "ordenes/",
+        views.lista_ordenes,
+        name="lista_ordenes"
+    ),
 ]

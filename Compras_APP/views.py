@@ -295,3 +295,31 @@ def seleccionar_ganadora_view(request, pk):
 def ver_orden_view(request, pk):
     orden = get_object_or_404(OrdenCompra, pk=pk)
     return render(request, "compras/ver_orden.html", {"orden": orden})
+
+# HU 20
+@login_required
+def generar_orden_view(request, pk):
+
+    cotizacion = get_object_or_404(Cotizacion, pk=pk)
+
+    orden, creada = OrdenCompra.objects.get_or_create(
+        cotizacion=cotizacion
+    )
+
+    return redirect("ver_orden", orden.id)
+
+@login_required
+def lista_ordenes(request):
+
+    ordenes = OrdenCompra.objects.select_related(
+        "cotizacion",
+        "cotizacion__solicitud"
+    ).order_by("-fecha_creacion")
+
+    return render(
+        request,
+        "compras/lista_ordenes.html",
+        {
+            "ordenes": ordenes
+        }
+    )

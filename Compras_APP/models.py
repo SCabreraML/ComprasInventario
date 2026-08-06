@@ -63,6 +63,7 @@ class SolicitudCompra(models.Model):
 
 
 class Cotizacion(models.Model):
+    
     # HU-14: Asociar proveedor con la cotización
     # Relacionar proveedor y solicitud (SolicitudCompra).
     solicitud = models.ForeignKey(
@@ -104,3 +105,28 @@ class Cotizacion(models.Model):
 
     def __str__(self):
         return f"Cotización de {self.proveedor} para {self.solicitud.codigo}"
+
+class OrdenCompra(models.Model):
+
+    cotizacion = models.OneToOneField(
+        Cotizacion,
+        on_delete=models.CASCADE
+    )
+
+    fecha = models.DateTimeField(auto_now_add=True)
+
+    costo_total = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        editable=False
+    )
+
+    def save(self, *args, **kwargs):
+        self.costo_total = (
+            self.cotizacion.solicitud.cantidad *
+            self.cotizacion.precio_unitario
+        )
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"OC-{self.id}"
