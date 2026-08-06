@@ -55,4 +55,24 @@ urlpatterns = [
         views.lista_ordenes,
         name="lista_ordenes"
     ),
+
+    path(
+        "ordenes/generar/<int:pk>/",
+        views.generar_orden_view,
+        name="generar_orden"
+    ),
+
+    path(
+        "ordenes/<int:pk>/",
+        views.ver_orden_view,
+        name="ver_orden"
+    ),
+
+    # HU-22: Exportar orden a PDF
+    # COMENTARIO DE LOCALIZACIÓN: HU-22 - Ruta para descargar el PDF de la orden de compra
+    path(
+        "ordenes/<int:pk>/pdf/",
+        views.exportar_orden_pdf,
+        name="exportar_orden_pdf"
+    ),
 ]

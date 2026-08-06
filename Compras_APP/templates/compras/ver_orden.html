@@ -1,0 +1,191 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- COMENTARIO DE LOCALIZACIÓN: HU-21: Crear vista imprimible y HU-22: Exportar orden a PDF -->
+<!-- HU-21: Esta plantilla implementa estilos de impresión optimizados y un botón de impresión -->
+<!-- HU-22: Esta plantilla contiene un enlace/botón para exportar la orden de compra a PDF -->
+
+<style>
+    /* Estilos adicionales para mejorar la vista en pantalla */
+    .order-card {
+        background: #fff;
+        border-radius: 8px;
+        padding: 30px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    }
+    .order-header {
+        border-bottom: 2px solid #dee2e6;
+        padding-bottom: 20px;
+        margin-bottom: 25px;
+    }
+    .order-title {
+        color: #0d6efd;
+        font-weight: 700;
+    }
+    .meta-label {
+        font-weight: 600;
+        color: #6c757d;
+    }
+
+    /* HU-21: Estilos optimizados para impresión */
+    @media print {
+        /* Ocultar barra lateral, barra de navegación, botones y pie de página */
+        .sidebar, .navbar, .no-print, .btn, .btn-outline-primary, .btn-primary, .btn-secondary, .btn-success {
+            display: none !important;
+        }
+
+        /* Expandir el contenido para ocupar todo el ancho de la página */
+        .content, .wrapper {
+            margin: 0 !important;
+            padding: 0 !important;
+            width: 100% !important;
+            background: none !important;
+            box-shadow: none !important;
+        }
+
+        .order-card {
+            border: none !important;
+            box-shadow: none !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            background: transparent !important;
+        }
+
+        body {
+            background-color: #ffffff !important;
+            color: #000000 !important;
+            font-size: 12pt !important;
+        }
+
+        .table {
+            width: 100% !important;
+            border-collapse: collapse !important;
+        }
+
+        .table th, .table td {
+            border: 1px solid #000000 !important;
+            padding: 8px !important;
+        }
+
+        .order-title {
+            color: #000000 !important;
+        }
+    }
+</style>
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4 no-print">
+        <a href="{% url 'lista_ordenes' %}" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Volver a la Lista
+        </a>
+        <div>
+            <!-- HU-21: Botón para gatillar la impresión de la orden -->
+            <button onclick="window.print();" class="btn btn-primary me-2">
+                <i class="bi bi-printer"></i> Imprimir Orden (HU-21)
+            </button>
+            <!-- HU-22: Botón para exportar la orden a PDF -->
+            <a href="{% url 'exportar_orden_pdf' orden.id %}" class="btn btn-danger">
+                <i class="bi bi-file-pdf"></i> Exportar a PDF (HU-22)
+            </a>
+        </div>
+    </div>
+
+    <div class="order-card">
+        <!-- Encabezado de la Orden -->
+        <div class="row order-header">
+            <div class="col-md-6">
+                <h2 class="order-title mb-1">
+                    <i class="bi bi-receipt"></i> ORDEN DE COMPRA
+                </h2>
+                <h4 class="text-muted">OC-{{ orden.id }}</h4>
+            </div>
+            <div class="col-md-6 text-md-end mt-3 mt-md-0">
+                <p class="mb-1"><span class="meta-label">Fecha de Emisión:</span> {{ orden.fecha|date:"d/m/Y H:i" }}</p>
+                <p class="mb-1"><span class="meta-label">Estado:</span> <span class="badge bg-success">Generada</span></p>
+            </div>
+        </div>
+
+        <!-- Información de las Partes -->
+        <div class="row mb-4">
+            <div class="col-md-6 mb-3 mb-md-0">
+                <div class="p-3 border rounded bg-light h-100">
+                    <h5 class="fw-bold text-dark border-bottom pb-2 mb-3">
+                        <i class="bi bi-building"></i> Proveedor
+                    </h5>
+                    <p class="mb-1"><strong>Nombre/Empresa:</strong> {{ orden.cotizacion.proveedor }}</p>
+                    <p class="mb-1"><strong>Vigencia de Cotización:</strong> {{ orden.cotizacion.vigencia|date:"d/m/Y" }}</p>
+                    <p class="mb-1"><strong>Tiempo de Entrega:</strong> {{ orden.cotizacion.tiempo_entrega }} días</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="p-3 border rounded bg-light h-100">
+                    <h5 class="fw-bold text-dark border-bottom pb-2 mb-3">
+                        <i class="bi bi-person"></i> Solicitante
+                    </h5>
+                    <p class="mb-1"><strong>Código de Solicitud:</strong> {{ orden.cotizacion.solicitud.codigo }}</p>
+                    <p class="mb-1"><strong>Usuario Solicitante:</strong> {{ orden.cotizacion.solicitud.solicitante.username }}</p>
+                    <p class="mb-1"><strong>Email Solicitante:</strong> {{ orden.cotizacion.solicitud.solicitante.email|default:"N/A" }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Detalle de Productos -->
+        <div class="table-responsive mb-4">
+            <table class="table table-bordered align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Producto / Item</th>
+                        <th>Descripción</th>
+                        <th class="text-center" style="width: 150px;">Cantidad</th>
+                        <th class="text-end" style="width: 180px;">Precio Unitario</th>
+                        <th class="text-end" style="width: 200px;">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <strong class="text-dark">{{ orden.cotizacion.solicitud.producto }}</strong>
+                        </td>
+                        <td class="text-muted">{{ orden.cotizacion.solicitud.descripcion|default:"Sin descripción adicional" }}</td>
+                        <td class="text-center">{{ orden.cotizacion.solicitud.cantidad }}</td>
+                        <td class="text-end">${{ orden.cotizacion.precio_unitario }}</td>
+                        <td class="text-end fw-bold text-success">${{ orden.costo_total }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Resumen de Costos -->
+        <div class="row justify-content-end">
+            <div class="col-md-5 text-end">
+                <table class="table table-borderless">
+                    <tr>
+                        <td class="text-end"><strong>Subtotal:</strong></td>
+                        <td class="text-end" style="width: 150px;">${{ orden.costo_total }}</td>
+                    </tr>
+                    <tr class="border-top">
+                        <td class="text-end"><h4 class="fw-bold mb-0">Total:</h4></td>
+                        <td class="text-end"><h4 class="fw-bold text-success mb-0">${{ orden.costo_total }}</h4></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- Sección de Firmas (visible en impresión) -->
+        <div class="row mt-5 pt-4 d-none d-print-flex">
+            <div class="col-6 text-center">
+                <div style="border-top: 1px solid #000; width: 80%; margin: 0 auto; padding-top: 5px;">
+                    <p class="mb-0 fw-bold">Firma Autorizada</p>
+                    <p class="text-muted" style="font-size: 10pt;">Departamento de Compras</p>
+                </div>
+            </div>
+            <div class="col-6 text-center">
+                <div style="border-top: 1px solid #000; width: 80%; margin: 0 auto; padding-top: 5px;">
+                    <p class="mb-0 fw-bold">Firma de Recepción</p>
+                    <p class="text-muted" style="font-size: 10pt;">Proveedor / Repre. Legal</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
