@@ -1,31 +1,23 @@
 Watching for file changes with StatReloader
-[16/Jul/2026 02:53:21] "GET / HTTP/1.1" 200 1922
-[16/Jul/2026 02:53:21] "GET /static/css/styles.css HTTP/1.1" 200 1030
-[16/Jul/2026 02:54:54] "GET / HTTP/1.1" 200 1922
-[16/Jul/2026 02:54:54] "GET /static/css/styles.css HTTP/1.1" 200 1030
-[16/Jul/2026 02:54:56] "POST / HTTP/1.1" 302 0
-[16/Jul/2026 02:54:56] "GET /dashboard/ HTTP/1.1" 200 3173
-[16/Jul/2026 02:54:57] "GET /solicitudes/ HTTP/1.1" 200 3249
-[16/Jul/2026 02:54:58] "GET /solicitudes/nueva/ HTTP/1.1" 200 3943
-[16/Jul/2026 02:55:00] "POST /solicitudes/nueva/ HTTP/1.1" 302 0
-[16/Jul/2026 02:55:00] "GET /solicitudes/ HTTP/1.1" 200 5132
-[16/Jul/2026 02:55:01] "GET /solicitudes/nueva/ HTTP/1.1" 200 3943
-[16/Jul/2026 02:55:02] "POST /solicitudes/nueva/ HTTP/1.1" 302 0
-[16/Jul/2026 02:55:02] "GET /solicitudes/ HTTP/1.1" 200 7335
-[16/Jul/2026 02:55:03] "GET /solicitudes/1/aprobar/ HTTP/1.1" 302 0
-[16/Jul/2026 02:55:03] "GET /solicitudes/ HTTP/1.1" 200 6483
-[16/Jul/2026 02:55:04] "GET /solicitudes/2/rechazar/ HTTP/1.1" 200 3451
-[16/Jul/2026 02:55:05] "POST /solicitudes/2/rechazar/ HTTP/1.1" 302 0
-[16/Jul/2026 02:55:05] "GET /solicitudes/ HTTP/1.1" 200 5778
+[06/Aug/2026 15:24:26] "HEAD / HTTP/1.1" 200 0
+[06/Aug/2026 15:27:56] "GET / HTTP/1.1" 200 1922
+[06/Aug/2026 15:27:56] "GET /static/css/styles.css HTTP/1.1" 200 1030
+[06/Aug/2026 15:30:34] "GET / HTTP/1.1" 200 1922
+[06/Aug/2026 15:30:34] "GET /static/css/styles.css HTTP/1.1" 200 1030
+[06/Aug/2026 15:32:14] "GET / HTTP/1.1" 200 1922
+[06/Aug/2026 15:32:14] "GET /static/css/styles.css HTTP/1.1" 200 1030
+[06/Aug/2026 15:33:20] "GET / HTTP/1.1" 200 1922
+[06/Aug/2026 15:33:20] "GET /static/css/styles.css HTTP/1.1" 200 1030
+[06/Aug/2026 15:33:23] "POST / HTTP/1.1" 302 0
+[06/Aug/2026 15:33:23] "GET /dashboard/ HTTP/1.1" 200 3260
+[06/Aug/2026 15:33:24] "GET /ordenes/1/ HTTP/1.1" 200 9453
 Performing system checks...
 
 System check identified no issues (0 silenced).
-July 16, 2026 - 02:48:10
+August 06, 2026 - 15:23:29
 Django version 6.0.6, using settings 'config.settings'
 Starting development server at http://127.0.0.1:8000/
 Quit the server with CONTROL-C.
 
 WARNING: This is a development server. Do not use it in a production setting. Use a production WSGI or ASGI server instead.
 For more information on production servers see: https://docs.djangoproject.com/en/6.0/howto/deployment/
-[AUDITORIA] Usuario: admin_test - Acción: Aprobar solicitud - Detalle: SOL-5EB73E03
-[AUDITORIA] Usuario: admin_test - Acción: Rechazar solicitud - Detalle: SOL-8C112C87 - No aprobado por falta de presupuesto de fin de mes.

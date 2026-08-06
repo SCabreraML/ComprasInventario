@@ -218,3 +218,73 @@ class CotizacionesTests(TestCase):
         self.assertEqual(len(cots_list), 2)
         self.assertIn(cot1, cots_list)
         self.assertIn(cot2, cots_list)
+
+
+class OrdenesPrintPDFTests(TestCase):
+    # COMENTARIO DE LOCALIZACIÓN: Pruebas End-to-End para HU-21: Crear vista imprimible y HU-22: Exportar orden a PDF
+    def setUp(self):
+        from decimal import Decimal
+        self.user = get_user_model().objects.create_user(username="test_manager", password="password")
+        self.solicitud = SolicitudCompra.objects.create(
+            producto="Laptop Dell Inspiron",
+            cantidad=3,
+            solicitante=self.user,
+            descripcion="Laptop para el departamento de IT"
+        )
+        from Compras_APP.models import Cotizacion, OrdenCompra
+        self.cotizacion = Cotizacion.objects.create(
+            solicitud=self.solicitud,
+            proveedor="Dell Corporation Inc.",
+            precio_unitario=Decimal("850.00"),
+            vigencia="2026-11-30",
+            tiempo_entrega=4
+        )
+        self.orden = OrdenCompra.objects.create(
+            cotizacion=self.cotizacion
+        )
+
+    def test_ver_orden_vista_imprimible_hu21(self):
+        """
+        HU-21: Crear vista imprimible
+        Verifica que la orden se visualiza correctamente, que incluye estilos de impresión @media print,
+        un botón de impresión que invoca window.print(), y los comentarios que localizan la HU-21.
+        """
+        self.client.login(username="test_manager", password="password")
+        response = self.client.get(reverse("ver_orden", args=[self.orden.id]))
+        self.assertEqual(response.status_code, 200)
+
+        html_content = response.content.decode("utf-8")
+
+        # Verificar detalles de la orden en el HTML renderizado
+        self.assertIn("Laptop Dell Inspiron", html_content)
+        self.assertIn("Dell Corporation Inc.", html_content)
+        self.assertIn("850.00", html_content)
+        self.assertIn("2550.00", html_content) # Total: 3 * 850
+
+        # Verificar presencia de HU-21 e instrucciones de impresión
+        self.assertIn("window.print();", html_content)
+        self.assertIn("Imprimir Orden", html_content)
+        self.assertIn("@media print", html_content)
+        self.assertIn("HU-21: Crear vista imprimible", html_content)
+
+    def test_exportar_orden_pdf_hu22(self):
+        """
+        HU-22: Exportar orden a PDF
+        Verifica que se genera y descarga un archivo PDF de la orden de compra con la información relevante.
+        """
+        self.client.login(username="test_manager", password="password")
+        response = self.client.get(reverse("exportar_orden_pdf", args=[self.orden.id]))
+
+        # Debe retornar 200 OK
+        self.assertEqual(response.status_code, 200)
+
+        # Debe ser de tipo application/pdf
+        self.assertEqual(response.headers["Content-Type"], "application/pdf")
+
+        # Debe sugerir la descarga (attachment) con el id de la orden
+        content_disp = response.headers["Content-Disposition"]
+        self.assertIn("attachment", content_disp)
+        self.assertIn(f"orden_compra_{self.orden.id}.pdf", content_disp)
+
+        # El cuerpo de la respuesta debe comenzar con los bytes mágicos de un PDF (%PDF)
+        self.assertTrue(response.content.startswith(b"%PDF"))
