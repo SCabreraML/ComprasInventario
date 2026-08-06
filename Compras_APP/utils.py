@@ -4,8 +4,6 @@ import json
 import os
 import sqlite3
 
-## HU-03: Integrar consulta a la API de Logistica
-
 def consultar_existencias_api(producto_identificador):
     """
     Consumir la API de Logística para consultar las existencias de un producto.

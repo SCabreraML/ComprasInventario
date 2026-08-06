@@ -73,6 +73,9 @@
                         </td>
                         <td class="text-end">
                             <div class="btn-group btn-group-sm">
+                                <a href="{% url 'lista_cotizaciones' solicitud.id %}" class="btn btn-outline-primary" title="Ver Cotizaciones (HU-11)">
+                                    <i class="bi bi-file-earmark-medical"></i> Cotizar
+                                </a>
                                 {% if solicitud.estado == "PENDIENTE" %}
                                     <a href="{% url 'editar_solicitud' solicitud.id %}" class="btn btn-outline-warning" title="Editar">
                                         <i class="bi bi-pencil"></i> Editar

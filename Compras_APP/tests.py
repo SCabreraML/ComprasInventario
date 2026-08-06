@@ -130,3 +130,91 @@ class ComprasAPPTests(TestCase):
         self.sol1.refresh_from_db()
         self.assertEqual(self.sol1.estado, SolicitudCompra.ESTADO_PENDIENTE)
         self.assertEqual(self.sol1.justificacion, "")
+
+
+class CotizacionesTests(TestCase):
+    def setUp(self):
+        self.user = get_user_model().objects.create_user(username="test_user", password="password")
+        self.solicitud = SolicitudCompra.objects.create(
+            producto="P-101",
+            cantidad=10,
+            solicitante=self.user,
+            descripcion="Falta stock en bodega"
+        )
+
+    def test_registrar_cotizacion_valido(self):
+        # HU-13: Registrar tiempo de entrega (tiempo_entrega = 5)
+        # HU-14: Asociar proveedor con la cotización (proveedor = "Proveedor S.A.")
+        # HU-12: Registrar información económica (precio_unitario, vigencia)
+        self.client.login(username="test_user", password="password")
+        response = self.client.post(reverse("registrar_cotizacion", args=[self.solicitud.id]), {
+            "proveedor": "Proveedor S.A.",
+            "precio_unitario": "15.50",
+            "vigencia": "2026-12-31",
+            "tiempo_entrega": 5
+        })
+        self.assertEqual(response.status_code, 302) # Redirects to cotizaciones list
+
+        # Verify the database contains the registered quote
+        from Compras_APP.models import Cotizacion
+        cotizaciones = Cotizacion.objects.filter(solicitud=self.solicitud)
+        self.assertEqual(cotizaciones.count(), 1)
+        cot = cotizaciones.first()
+        self.assertEqual(cot.proveedor, "Proveedor S.A.") # HU-14: Asociar proveedor
+        self.assertEqual(cot.tiempo_entrega, 5) # HU-13: Registrar tiempo de entrega
+
+    def test_registrar_cotizacion_tiempo_entrega_obligatorio(self):
+        # HU-13: El tiempo de entrega es obligatorio y debe validarse en el formulario.
+        self.client.login(username="test_user", password="password")
+        response = self.client.post(reverse("registrar_cotizacion", args=[self.solicitud.id]), {
+            "proveedor": "Proveedor S.A.",
+            "precio_unitario": "15.50",
+            "vigencia": "2026-12-31",
+            "tiempo_entrega": "" # Missing delivery time
+        })
+        self.assertEqual(response.status_code, 200) # Form returns invalid
+
+        from Compras_APP.models import Cotizacion
+        self.assertFalse(Cotizacion.objects.filter(solicitud=self.solicitud).exists())
+
+    def test_registrar_cotizacion_proveedor_obligatorio(self):
+        # HU-14: El proveedor es obligatorio para asociarlo.
+        self.client.login(username="test_user", password="password")
+        response = self.client.post(reverse("registrar_cotizacion", args=[self.solicitud.id]), {
+            "proveedor": "", # Missing proveedor
+            "precio_unitario": "15.50",
+            "vigencia": "2026-12-31",
+            "tiempo_entrega": 5
+        })
+        self.assertEqual(response.status_code, 200) # Form returns invalid
+
+        from Compras_APP.models import Cotizacion
+        self.assertFalse(Cotizacion.objects.filter(solicitud=self.solicitud).exists())
+
+    def test_lista_cotizaciones_consultar(self):
+        # HU-11: Consultar cotizaciones registradas
+        from Compras_APP.models import Cotizacion
+        cot1 = Cotizacion.objects.create(
+            solicitud=self.solicitud,
+            proveedor="Proveedor A",
+            precio_unitario="10.00",
+            vigencia="2026-12-31",
+            tiempo_entrega=3
+        )
+        cot2 = Cotizacion.objects.create(
+            solicitud=self.solicitud,
+            proveedor="Proveedor B",
+            precio_unitario="12.00",
+            vigencia="2026-12-31",
+            tiempo_entrega=5
+        )
+
+        self.client.login(username="test_user", password="password")
+        response = self.client.get(reverse("lista_cotizaciones", args=[self.solicitud.id]))
+        self.assertEqual(response.status_code, 200)
+
+        # Verify the context has the list of registered quotes
+        cots_list = list(response.context["cotizaciones"])
+        self.assertEqual(len(cots_list), 2)
+        self.assertIn(cot1, cots_list)
+        self.assertIn(cot2, cots_list)

@@ -37,4 +37,22 @@ urlpatterns = [
         views.rechazar_solicitud_view,
         name="rechazar_solicitud"
     ),
+
+    path(
+        "solicitudes/<int:pk>/cotizaciones/",
+        views.lista_cotizaciones_view,
+        name="lista_cotizaciones"
+    ),
+
+    path(
+        "solicitudes/<int:pk>/cotizaciones/nueva/",
+        views.registrar_cotizacion_view,
+        name="registrar_cotizacion"
+    ),
+
+    path(
+        "ordenes/",
+        views.lista_ordenes,
+        name="lista_ordenes"
+    ),
 ]
