@@ -63,13 +63,6 @@
                             <td><span class="badge bg-info text-dark">{{ cot.tiempo_entrega }} días</span></td>
                             <td>{{ cot.vigencia|date:"d/m/Y" }}</td>
                             <td><small class="text-muted">{{ cot.fecha_registro|date:"d/m/Y H:i" }}</small></td>
-                            <td>
-    <a href="{% url 'generar_orden' cot.id %}"
-       class="btn btn-success btn-sm">
-        <i class="bi bi-check-circle"></i>
-        Generar Orden
-    </a>
-</td>
                         </tr>
                     {% empty %}
                         <tr>
