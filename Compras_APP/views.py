@@ -512,3 +512,75 @@ def lista_ordenes(request):
             "ordenes": ordenes
         }
     )
+
+from .forms import ProveedorForm
+from .models import Proveedor
+
+@login_required
+def compras_listado_proveedores(request):
+    proveedores = Proveedor.objects.all().order_by("nombre")
+    return render(
+        request,
+        "compras/lista_proveedores.html",
+        {
+            "proveedores": proveedores
+        }
+    )
+
+@login_required
+def registrar_proveedor(request):
+    if request.method == "POST":
+        form = ProveedorForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("compras_listado_proveedores")
+    else:
+        form = ProveedorForm()
+
+    return render(
+        request,
+        "compras/registrar_proveedor.html",
+        {
+            "form": form
+        }
+    )
+
+@login_required
+def reporte_ordenes(request):
+    from django.db.models import Sum, Count, Avg
+    import collections
+
+    stats = OrdenCompra.objects.aggregate(
+        total=Count("id"),
+        total_gasto=Sum("costo_total"),
+        promedio_gasto=Avg("costo_total")
+    )
+
+    total_ordenes = stats.get("total") or 0
+    costo_total_acumulado = stats.get("total_gasto") or 0
+    gasto_promedio = stats.get("promedio_gasto") or 0
+
+    # Agrupar gastos por proveedor
+    proveedor_totals = collections.defaultdict(lambda: {"count": 0, "total": 0})
+    for orden in OrdenCompra.objects.all():
+        prov_name = orden.cotizacion.proveedor
+        proveedor_totals[prov_name]["count"] += 1
+        proveedor_totals[prov_name]["total"] += orden.costo_total
+
+    proveedores_gasto = [
+        {"proveedor": k, "count": v["count"], "total": v["total"]}
+        for k, v in proveedor_totals.items()
+    ]
+    # Ordenar por gasto total descendente
+    proveedores_gasto = sorted(proveedores_gasto, key=lambda x: x["total"], reverse=True)
+
+    return render(
+        request,
+        "compras/reporte_ordenes.html",
+        {
+            "total_ordenes": total_ordenes,
+            "costo_total_acumulado": costo_total_acumulado,
+            "gasto_promedio": gasto_promedio,
+            "proveedores_gasto": proveedores_gasto
+        }
+    )

@@ -106,6 +106,15 @@ class Cotizacion(models.Model):
     def __str__(self):
         return f"Cotización de {self.proveedor} para {self.solicitud.codigo}"
 
+class Proveedor(models.Model):
+    nombre = models.CharField(max_length=150)
+    ruc = models.CharField(max_length=13, unique=True)
+    telefono = models.CharField(max_length=20, blank=True, default="")
+    correo = models.EmailField(blank=True, default="")
+
+    def __str__(self):
+        return self.nombre
+
 class OrdenCompra(models.Model):
 
     cotizacion = models.OneToOneField(

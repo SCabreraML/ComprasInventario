@@ -75,4 +75,23 @@ urlpatterns = [
         views.exportar_orden_pdf,
         name="exportar_orden_pdf"
     ),
+
+    # Rutas para Proveedores y Reportes
+    path(
+        "proveedores/",
+        views.compras_listado_proveedores,
+        name="compras_listado_proveedores"
+    ),
+
+    path(
+        "proveedores/nuevo/",
+        views.registrar_proveedor,
+        name="registrar_proveedor"
+    ),
+
+    path(
+        "ordenes/reporte/",
+        views.reporte_ordenes,
+        name="reporte_ordenes"
+    ),
 ]

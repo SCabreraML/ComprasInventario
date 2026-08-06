@@ -86,3 +86,34 @@ class CotizacionForm(forms.ModelForm):
         if precio is None or precio <= 0:
             raise forms.ValidationError("El precio unitario debe ser mayor a cero.")
         return precio
+
+
+from .models import Proveedor
+
+class ProveedorForm(forms.ModelForm):
+    class Meta:
+        model = Proveedor
+        fields = ["nombre", "ruc", "telefono", "correo"]
+        widgets = {
+            "nombre": forms.TextInput(attrs={"class": "form-control", "placeholder": "Nombre del Proveedor"}),
+            "ruc": forms.TextInput(attrs={"class": "form-control", "placeholder": "RUC (13 dígitos)"}),
+            "telefono": forms.TextInput(attrs={"class": "form-control", "placeholder": "Teléfono de contacto"}),
+            "correo": forms.EmailInput(attrs={"class": "form-control", "placeholder": "correo@ejemplo.com"}),
+        }
+
+    def clean_ruc(self):
+        ruc = self.cleaned_data.get("ruc")
+        if len(ruc) != 13:
+            raise forms.ValidationError("El RUC debe tener exactamente 13 dígitos.")
+        return ruc
+
+
+class SolicitudCotizacionForm(forms.Form):
+    proveedores = forms.ModelMultipleChoiceField(
+        queryset=Proveedor.objects.all(),
+        widget=forms.CheckboxSelectMultiple
+    )
+    observaciones = forms.CharField(
+        required=False,
+        widget=forms.Textarea(attrs={"rows": 3, "class": "form-control"})
+    )

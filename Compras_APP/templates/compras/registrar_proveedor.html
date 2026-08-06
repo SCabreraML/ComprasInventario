@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white py-3">
+                    <h5 class="card-title mb-0">
+                        <i class="bi bi-person-plus"></i> Registrar Nuevo Proveedor
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+                    <form method="post">
+                        {% csrf_token %}
+
+                        {% if form.errors %}
+                        <div class="alert alert-danger">
+                            <strong>Por favor, corrige los siguientes errores:</strong>
+                            <ul class="mb-0">
+                                {% for field, errors in form.errors.items %}
+                                    {% for error in errors %}
+                                        <li>{{ field|capfirst }}: {{ error }}</li>
+                                    {% endfor %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        {% endif %}
+
+                        <div class="mb-3">
+                            <label for="id_nombre" class="form-label fw-bold">Nombre o Empresa</label>
+                            {{ form.nombre }}
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="id_ruc" class="form-label fw-bold">RUC (13 dígitos)</label>
+                            {{ form.ruc }}
+                            <div class="form-text">Ejemplo: 1792345678001</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="id_telefono" class="form-label fw-bold">Teléfono de Contacto</label>
+                            {{ form.telefono }}
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="id_correo" class="form-label fw-bold">Correo Electrónico</label>
+                            {{ form.correo }}
+                        </div>
+
+                        <div class="d-flex justify-content-end mt-4">
+                            <a href="{% url 'compras_listado_proveedores' %}" class="btn btn-secondary me-2">
+                                <i class="bi bi-x-circle"></i> Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-success">
+                                <i class="bi bi-save"></i> Guardar Proveedor
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

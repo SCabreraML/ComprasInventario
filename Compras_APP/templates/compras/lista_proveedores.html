@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3>
+            <i class="bi bi-truck"></i>
+            Listado de Proveedores
+        </h3>
+        <a href="{% url 'registrar_proveedor' %}" class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i> Nuevo Proveedor
+        </a>
+    </div>
+
+    <div class="card shadow">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>RUC</th>
+                            <th>Teléfono</th>
+                            <th>Correo Electrónico</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for prov in proveedores %}
+                        <tr>
+                            <td class="fw-bold text-dark">{{ prov.nombre }}</td>
+                            <td><span class="badge bg-secondary font-monospace">{{ prov.ruc }}</span></td>
+                            <td>{{ prov.telefono|default:"N/A" }}</td>
+                            <td>{{ prov.correo|default:"N/A" }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="4" class="text-center py-4 text-muted">
+                                <i class="bi bi-inbox fs-3 d-block mb-2"></i>
+                                No hay proveedores registrados en el sistema.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% block extra_js %}{% endblock %}
+{% endblock %}
